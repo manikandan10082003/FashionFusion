@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Affiliate Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        header {
+            background-color: #232f3e;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+        }
+        .product {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 15px;
+            width: 280px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+        .product:hover {
+            transform: translateY(-5px);
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        .search-bar {
+            width: 80%;
+            max-width: 600px;
+            padding: 10px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+        }
+        button {
+            background-color: #ff9900;
+            border: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e68900;
+        }
+    </style>
+</head>
+<body>
+    <header>Amazon Affiliate Store</header>
+    <input type="text" id="search" class="search-bar" placeholder="Search products..." onkeyup="filterProducts()">
+    <div class="container" id="products"></div>
+    <script>
+        const products = [
+            { name: "Wireless Earbuds", price: "$39.99", img: "https://via.placeholder.com/250", link: "https://www.amazon.com/dp/B01N5IB20Q" },
+            { name: "Smart Watch", price: "$59.99", img: "https://via.placeholder.com/250", link: "https://www.amazon.com/dp/B08N5WRWNW" },
+            { name: "Bluetooth Speaker", price: "$29.99", img: "https://via.placeholder.com/250", link: "https://www.amazon.com/dp/B07N4M94FR" }
+        ];
+
+        function displayProducts(productsList) {
+            const container = document.getElementById("products");
+            container.innerHTML = "";
+            productsList.forEach(product => {
+                container.innerHTML += `
+                    <div class="product">
+                        <img src="${product.img}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <p><strong>Price:</strong> ${product.price}</p>
+                        <a href="${product.link}" target="_blank"><button>Buy Now</button></a>
+                    </div>
+                `;
+            });
+        }
+
+        function filterProducts() {
+            const query = document.getElementById("search").value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+            displayProducts(filtered);
+        }
+
+        displayProducts(products);
+    </script>
+</body>
+</html>
