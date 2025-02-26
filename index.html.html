@@ -69,35 +69,29 @@
     <header>Amazon Affiliate Store</header>
     <input type="text" id="search" class="search-bar" placeholder="Search products..." onkeyup="filterProducts()">
     <div class="container" id="products"></div>
+    
     <script>
-        const products = [
-            { name: "Wireless Earbuds", price: "$39.99", img: "https://via.placeholder.com/250", link: "https://www.amazon.com/dp/B01N5IB20Q" },
-            { name: "Smart Watch", price: "$59.99", img: "https://via.placeholder.com/250", link: "https://www.amazon.com/dp/B08N5WRWNW" },
-            { name: "Bluetooth Speaker", price: "$29.99", img: "https://via.placeholder.com/250", link: "https://www.amazon.com/dp/B07N4M94FR" }
-        ];
-
+        async function fetchProducts() {
+            const response = await fetch("YOUR_GOOGLE_APPS_SCRIPT_WEB_URL");
+            const products = await response.json();
+            displayProducts(products);
+        }
+    
         function displayProducts(productsList) {
             const container = document.getElementById("products");
             container.innerHTML = "";
             productsList.forEach(product => {
                 container.innerHTML += `
                     <div class="product">
-                        <img src="${product.img}" alt="${product.name}">
+                        <img src="${product.image}" alt="${product.name}">
                         <h3>${product.name}</h3>
-                        <p><strong>Price:</strong> ${product.price}</p>
                         <a href="${product.link}" target="_blank"><button>Buy Now</button></a>
                     </div>
                 `;
             });
         }
-
-        function filterProducts() {
-            const query = document.getElementById("search").value.toLowerCase();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
-            displayProducts(filtered);
-        }
-
-        displayProducts(products);
-    </script>
+    
+        fetchProducts(); // Call function to load products
+    </script>    
 </body>
 </html>
