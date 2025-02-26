@@ -71,52 +71,54 @@
     <div class="container" id="products"></div>
 
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbx59nIVWTRkEJdKlzK_hDT3EOxgYTpq7589WY4M-aPaJNS6t3WY56ol1cAS2-XKKZRw/exec"; // Replace this with your API URL
+    const API_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE"; // ✅ Replace with your actual API URL
+    let products = []; // Store products globally
 
-        async function fetchProducts() {
-            try {
-                console.log("🚀 Fetching data from API...");
-                const response = await fetch(API_URL);
-                console.log("🔄 Response Status:", response.status);
+    async function fetchProducts() {
+        try {
+            console.log("🚀 Fetching data from API...");
+            const response = await fetch(API_URL);
+            console.log("🔄 Response Status:", response.status);
 
-                if (!response.ok) throw new Error("❌ Network response was not ok");
+            if (!response.ok) throw new Error("❌ Network response was not ok");
 
-                const products = await response.json();
-                console.log("✅ Fetched Products:", products);
+            products = await response.json();
+            console.log("✅ Fetched Products:", products);
 
-                if (!products.length) {
-                    document.getElementById("products").innerHTML = "<p>No products available.</p>";
-                    return;
-                }
-
-                displayProducts(products);
-            } catch (error) {
-                console.error("❌ Error fetching products:", error);
+            if (!Array.isArray(products)) {
+                document.getElementById("products").innerHTML = "<p>Error loading products.</p>";
+                return;
             }
+
+            displayProducts(products);
+        } catch (error) {
+            console.error("❌ Error fetching products:", error);
         }
+    }
 
-        function displayProducts(productsList) {
-            const container = document.getElementById("products");
-            container.innerHTML = "";
+    function displayProducts(productsList) {
+        const container = document.getElementById("products");
+        container.innerHTML = "";
 
-            productsList.forEach(product => {
-                container.innerHTML += `
-                    <div class="product">
-                        <img src="${product.image}" alt="${product.name}">
-                        <h3>${product.name}</h3>
-                        <a href="${product.link}" target="_blank"><button>Buy Now</button></a>
-                    </div>
-                `;
-            });
-        }
+        productsList.forEach(product => {
+            container.innerHTML += `
+                <div class="product">
+                    <img src="${product.image}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <a href="${product.link}" target="_blank"><button>Buy Now</button></a>
+                </div>
+            `;
+        });
+    }
 
-        function filterProducts() {
-            const query = document.getElementById("search").value.toLowerCase();
-            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
-            displayProducts(filtered);
-        }
+    function filterProducts() {
+        const query = document.getElementById("search").value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+        displayProducts(filtered);
+    }
 
-        fetchProducts();
-    </script>
+    fetchProducts(); // Fetch products when page loads
+</script>
+
 </body>
 </html>
