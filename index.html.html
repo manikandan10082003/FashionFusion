@@ -69,50 +69,54 @@
     <header>Amazon Affiliate Store</header>
     <input type="text" id="search" class="search-bar" placeholder="Search products..." onkeyup="filterProducts()">
     <div class="container" id="products"></div>
-    
-   <script>
-    async function fetchProducts() {
-        try {
-            console.log("🚀 Fetching data from API...");
 
-            const response = await fetch("https://script.google.com/macros/s/AKfycbyzdmALmVlF8L4QjUTkMz-oqFV2Wx4a5gGXCDeQ0LB4wti1n28zEC4TpJIFGSyr5Jn2/exec");
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwdgD5vMt_kRYp063ujGCEcInni9EyQKTbVGXWYZZHV1PnNRYr71oWOvtFvCPmkUtXz/exec"; // Replace this with your API URL
 
-            console.log("🔄 Response Status:", response.status);
+        async function fetchProducts() {
+            try {
+                console.log("🚀 Fetching data from API...");
+                const response = await fetch(API_URL);
+                console.log("🔄 Response Status:", response.status);
 
-            if (!response.ok) throw new Error("❌ Network response was not ok");
+                if (!response.ok) throw new Error("❌ Network response was not ok");
 
-            const products = await response.json();
-            console.log("✅ Fetched Products:", products);
+                const products = await response.json();
+                console.log("✅ Fetched Products:", products);
 
-            if (!products.length) {
-                document.getElementById("products").innerHTML = "<p>No products available.</p>";
-                return;
+                if (!products.length) {
+                    document.getElementById("products").innerHTML = "<p>No products available.</p>";
+                    return;
+                }
+
+                displayProducts(products);
+            } catch (error) {
+                console.error("❌ Error fetching products:", error);
             }
-
-            displayProducts(products);
-        } catch (error) {
-            console.error("❌ Error fetching products:", error);
         }
-    }
 
-    function displayProducts(productsList) {
-        const container = document.getElementById("products");
-        container.innerHTML = "";
+        function displayProducts(productsList) {
+            const container = document.getElementById("products");
+            container.innerHTML = "";
 
-        productsList.forEach(product => {
-            container.innerHTML += `
-                <div class="product">
-                    <img src="${product.image}" alt="${product.name}">
-                    <h3>${product.name}</h3>
-                    <a href="${product.link}" target="_blank"><button>Buy Now</button></a>
-                </div>
-            `;
-        });
-    }
+            productsList.forEach(product => {
+                container.innerHTML += `
+                    <div class="product">
+                        <img src="${product.image}" alt="${product.name}">
+                        <h3>${product.name}</h3>
+                        <a href="${product.link}" target="_blank"><button>Buy Now</button></a>
+                    </div>
+                `;
+            });
+        }
 
-    fetchProducts();
-</script>
+        function filterProducts() {
+            const query = document.getElementById("search").value.toLowerCase();
+            const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+            displayProducts(filtered);
+        }
 
-    
+        fetchProducts();
+    </script>
 </body>
 </html>
